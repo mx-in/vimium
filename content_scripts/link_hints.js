@@ -696,6 +696,13 @@ class LinkHintsMode {
             });
           } else if (localHint.reason === "Open.") {
             return clickEl.open = !clickEl.open;
+          } else if (clickEl.tagName.toLowerCase() === 'audio') {
+            // Toggle play/pause for audio elements
+            if (clickEl.paused) {
+              return clickEl.play();
+            } else {
+              return clickEl.pause();
+            }
           } else if (DomUtils.isSelectable(clickEl)) {
             globalThis.focus();
             return DomUtils.simulateSelect(clickEl);
@@ -1159,6 +1166,9 @@ const LocalHints = {
     // Check for tagNames which are natively clickable.
     switch (tagName) {
       case "a":
+        isClickable = true;
+        break;
+      case "audio":
         isClickable = true;
         break;
       case "textarea":
